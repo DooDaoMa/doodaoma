@@ -1,0 +1,33 @@
+services:
+  web:
+    build: ./doodaoma-web
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_BASE_URL=http://server:8080
+      - NEXT_PUBLIC_WEB_SOCKET_URL=ws://server:8080
+      - NEXT_PUBLIC_OPEN_WEATHER_KEY=21ce03715d96d6330b1d0e3269e6478a
+      - NEXT_PUBLIC_MOON_PHASE_API_USERNAME=0cf6db1e-c2c0-40be-b4b7-8046e0039ead
+      - NEXT_PUBLIC_MOON_PHASE_API_PASSWORD=4f53efbfac92f10569de540bdbcb5773eeb1a041e176aea0573b5b61c64b9614e8fd5c89414496ebb3e81706092f09f7eba389e4dfaab953ffc32593219235cb2ef57ca0d31dca2519094b60f848ec992181b32724ef32410a38067d07681f977d1f0dd296ef81fa5f0a2eb02bca8965
+      - NEXT_PUBLIC_NASA_API=lKm3M2eiPgSNSzoaqheUCFo2PLnwlpxvxCPW1lt3
+    depends_on:
+      - server
+
+  server:
+    build: ./doodaoma-server
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=development
+      - MONGODB_URL=mongodb://db:27017
+      - PORT=8080
+      - AWS_ACCESS_KEY="YOUR_AWS_ACCESS_KEY_ID"
+      - AWS_SECRET_ACCESS_KEY="YOUR_AWS_SECRET_ACCESS_KEY"
+    depends_on:
+      - db
+  
+  db:
+    image: mongo
+    ports:
+      - "27017:27017"
